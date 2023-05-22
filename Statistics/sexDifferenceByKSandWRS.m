@@ -1,3 +1,8 @@
+% Author: Atanu Giri
+% Date: 05/12/2023
+% This script performs pairwise comparison test for sex difference in BL, 
+% FD, Alcohol, Oxy, Incubation and for BL vs FD plots (V66)
+
 function sexDifferenceByKSandWRS
 clear; close all; clc;
 loadFile = load('INCsexDiffPassing.mat');
