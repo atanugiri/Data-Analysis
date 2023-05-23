@@ -170,5 +170,5 @@ fig_name = strrep(fig_name, '/', '');
 fig_name = strrep(fig_name, ':', '_');
 fig_name = strrep(fig_name, ' ', '');
 % print(h,fig_name,'-dpng','-r400');
-% savefig(h,sprintf('%s.fig',fig_name));
+savefig(h,sprintf('%s.fig',fig_name));
 end
