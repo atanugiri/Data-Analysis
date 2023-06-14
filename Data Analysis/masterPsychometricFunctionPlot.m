@@ -166,6 +166,7 @@ sgtitle(dataLabel,'Interpreter','latex');
 
 % save figure
 fig_name = sprintf('%s_%s_%sFrom%s_%s',genotype,taskType,string(healthType),startDate,endDate);
+% fig_name = sprintf('%s',whichAnimal);
 fig_name = strrep(fig_name, '/', '');
 fig_name = strrep(fig_name, ':', '_');
 fig_name = strrep(fig_name, ' ', '');
