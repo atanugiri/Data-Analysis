@@ -8,7 +8,7 @@
 
 function maleFemalePsychometicalFunctionPlot(feature,healthType, ...
     taskType,splitLightLevel,approachTrials,varargin)
-feature = 'passingcentralzonerejectinitialpresence';healthType = 2;taskType = 1;splitLightLevel = 0;approachTrials = 0;
+% feature = 'passingcentralzonerejectinitialpresence';healthType = 2;taskType = 1;splitLightLevel = 0;approachTrials = 0;
 % connect to database
 datasource = 'live_database';
 conn = database(datasource,'postgres','1234');
