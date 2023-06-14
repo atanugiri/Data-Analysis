@@ -26,3 +26,4 @@ for conc = 1:4
     meanValue(conc) = mean(approachVector);
     stdErr(conc) = std(approachVector)/sqrt(length(approachVector));
 end
+end
