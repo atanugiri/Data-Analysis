@@ -1,7 +1,6 @@
 % Author: Atanu Giri
-% Date: 06/010/2023
+% Date: 06/10/2023
 % This function plots approach rate of males and females at different light intensity
-% for
 
 function [appRateOfEachFemale, appRateOfEachMale] = approachRateAtDifferentCost
 close all; clc; clear;
@@ -108,8 +107,8 @@ if strcmpi(averagePlot,'y')
     h = figure;
     hold on;
     %   psychometric plot
-    errorbar(commonCost,meanValueFemale,stdErrFemale,'r-o','MarkerFaceColor',[0.8 0 0],'LineWidth',2,'Color', [0.8 0 0]);
-    errorbar(commonCost,meanValueMale,stdErrMale,'b-o','MarkerFaceColor',[0 0 0.8],'LineWidth',2,'Color', [0 0 0.8]);
+    errorbar(commonCost,meanValueFemale,stdErrFemale,'r-o','MarkerFaceColor',[1 0 0],'LineWidth',2,'Color', [0.8 0 0]);
+    errorbar(commonCost,meanValueMale,stdErrMale,'b-o','MarkerFaceColor',[0 0 1],'LineWidth',2,'Color', [0 0 0.8]);
     %     ylim([0 1]);
     xlabel('Cost value','Interpreter','latex','FontSize',20);
     ylabel('Approach rate','Interpreter','latex','FontSize',20);
@@ -141,18 +140,18 @@ else
     for female = 1:numel(femaleSubjects)
         subject = femaleSubjects(female);
         [~, meanValueFemale, ~] = psychometricFunctionCostValues(lightIntensityData, subject, commonCost);
-        plot(commonCost, meanValueFemale, 'r-o','MarkerFaceColor',[0.8 0 0],'LineWidth',1.5);
+        plot(commonCost, meanValueFemale, 'r-o','MarkerFaceColor',[1 0 0],'LineWidth',1.5);
     end
     for male = 1:numel(maleSubjects)
         subject = maleSubjects(male);
         [~, meanValueMale, ~] = psychometricFunctionCostValues(lightIntensityData, subject, commonCost);
-        plot(commonCost, meanValueMale, 'b-o','MarkerFaceColor',[0 0 0.8],'LineWidth',1.5);
+        plot(commonCost, meanValueMale, 'b-o','MarkerFaceColor',[0 0 1],'LineWidth',1.5);
     end
     hold off;
 end
 
 % save plot
-savefig(h,'costAnalysisPlot.fig');
+% savefig(h,'costAnalysisPlot.fig');
 
 %% Function to get approach rate for male and female subjects
     function [appRateOfEach, meanValue, stdErr] = psychometricFunctionCostValues(data, animalList, costArray)

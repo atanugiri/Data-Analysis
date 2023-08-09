@@ -26,12 +26,16 @@ genotype = input('Enter genotype: ','s');
 
 
 %% Do you want to analyze only approach trials
-approachTrials = input('Do you want to analyze only approach trials? (y/n) ', 's');
+approachTrials = input('Do you want to analyze only approach trials? (y/n/reject) ', 's');
 
 if strcmpi(approachTrials,'y')
     liveDatabaseQuery = sprintf(strcat("SELECT id, subjectid, referencetime, " + ...
         "gender, feeder, health, lightlevel, genotype FROM live_table WHERE " + ...
         "genotype = '%s' AND approachavoid = '1.000000' ORDER BY id"),genotype);
+elseif strcmpi(approachTrials,'reject')
+    liveDatabaseQuery = sprintf(strcat("SELECT id, subjectid, referencetime, " + ...
+        "gender, feeder, health, lightlevel, genotype FROM live_table WHERE " + ...
+        "genotype = '%s' AND approachavoid = '0.000000' ORDER BY id"),genotype);
 else
     liveDatabaseQuery = sprintf(strcat("SELECT id, subjectid, referencetime, " + ...
         "gender, feeder, health, lightlevel, genotype FROM live_table WHERE " + ...
@@ -170,6 +174,5 @@ fig_name = sprintf('%s_%s_%sFrom%s_%s',genotype,taskType,string(healthType),star
 fig_name = strrep(fig_name, '/', '');
 fig_name = strrep(fig_name, ':', '_');
 fig_name = strrep(fig_name, ' ', '');
-% print(h,fig_name,'-dpng','-r400');
-savefig(h,sprintf('%s.fig',fig_name));
+% savefig(h,sprintf('%s.fig',fig_name));
 end
