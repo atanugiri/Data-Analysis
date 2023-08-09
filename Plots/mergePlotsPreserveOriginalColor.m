@@ -1,5 +1,10 @@
-f1 = '2eBL.fig';
-f2 = 'S7k.fig';
+% Author: Atanu Giri
+% Date: 08/08/2023
+
+% This function overlays line plots
+
+f1 = 'BLRejectTrialsPassing.fig';
+f2 = 'FDRejectTrialsPassing.fig';
 
 % Load the first figure and get the handles of the axes and children
 fig1 = openfig(f1);
@@ -34,8 +39,15 @@ colors2 = getColorsFromObjects(fig2axChildren);
 h = [h1; h2];
 
 % Set the original colors to the copied objects
-setColorsToObjects(h1, colors1);
-setColorsToObjects(h2, colors2);
+if ~isequal(colors1, colors2)
+    setColorsToObjects(h1, colors1);
+    setColorsToObjects(h2, colors2);
+else
+    colors1{1} = [0 1 0]; colors1{2} = [0 1 0];
+    colors2{1} = [0.5, 0, 0.5]; colors2{2} = [0.5, 0, 0.5];
+    setColorsToObjects(h1, colors1);
+    setColorsToObjects(h2, colors2);
+end
 
 % Adjust the legend, labels, and other settings
 legend(ax, h, 'Location', leg.Location, 'Interpreter', 'latex');
@@ -52,23 +64,23 @@ close(fig2);
 
 % Helper function to get the colors from objects
 function colors = getColorsFromObjects(objects)
-    colors = cell(size(objects));
-    for i = 1:numel(objects)
-        if isprop(objects(i), 'Color')
-            colors{i} = objects(i).Color;
-        elseif isprop(objects(i), 'MarkerEdgeColor')
-            colors{i} = objects(i).MarkerEdgeColor;
-        end
+colors = cell(size(objects));
+for i = 1:numel(objects)
+    if isprop(objects(i), 'Color')
+        colors{i} = objects(i).Color;
+    elseif isprop(objects(i), 'MarkerEdgeColor')
+        colors{i} = objects(i).MarkerEdgeColor;
     end
+end
 end
 
 % Helper function to set the colors to objects
 function setColorsToObjects(objects, colors)
-    for i = 1:numel(objects)
-        if isprop(objects(i), 'Color')
-            objects(i).Color = colors{i};
-        elseif isprop(objects(i), 'MarkerEdgeColor')
-            objects(i).MarkerEdgeColor = colors{i};
-        end
+for i = 1:numel(objects)
+    if isprop(objects(i), 'Color')
+        objects(i).Color = colors{i};
+    elseif isprop(objects(i), 'MarkerEdgeColor')
+        objects(i).MarkerEdgeColor = colors{i};
     end
+end
 end
