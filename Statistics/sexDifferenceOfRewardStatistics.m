@@ -9,7 +9,7 @@ function sexDifferenceOfRewardStatistics
 clear; close all; clc;
 
 % Load the desired mat file for analysis
-loadFile = load("BLsexDiffRejectPassing.mat");
+loadFile = load("INCsexDiffDistance.mat");
 dataForFemale = loadFile.featureForEachSubjectId{1};
 dataForMale = loadFile.featureForEachSubjectId{2};
 
