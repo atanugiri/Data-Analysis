@@ -7,8 +7,8 @@ function ThreeWayBLvsManipulationDiffStatistics
 clear; close all; clc;
 
 % Load the desired mat file for analysis
-loadFile1 = load('BLsexDiffDistance.mat');
-loadFile2 = load('INCsexDiffDistance.mat');
+loadFile1 = load('BLsexDiffApproachavoid.mat');
+loadFile2 = load('OXYsexDiffApproachavoid.mat');
 
 femaleDataOfBL = loadFile1.featureForEachSubjectId{1};
 maleDataOfBL = loadFile1.featureForEachSubjectId{2};
@@ -41,7 +41,7 @@ concentration = categorical([concFemaleBL, concMaleBL, concFemaleMan, concMaleMa
 % Perform n-way ANOVA
 [~, tbl, ~] = anovan(responseData, {gender, condition, concentration}, ...
     'varnames', {'Gender', 'Condition', 'Concentration'}, 'model', 'interaction', 'display','off');
-% disp(tbl);
+anovaTable = cell2table(tbl);
 
 % Print 3-way ANOVA result
 fprintf("Effect of condition: d.f. = %d, F = %0.4f, p = %0.4f.\n", tbl{3,3}, tbl{3,6}, tbl{3,7})
