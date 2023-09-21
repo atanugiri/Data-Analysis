@@ -3,10 +3,10 @@
 % This function generate psychometric function plot according
 % to the input feature only for Oxycodon and Incubation health type.
 
-%% Invokes psychometricFunPlotValues, maleFemalePsychometricFunPlotValues
+%% Invokes getOxyIncubIds, psychometricFunPlotValues, maleFemalePsychometricFunPlotValues
 %% psychometricFunPlotOfFeature, figureLimitFun
 function featureForEachSubjectId = oxyPsychometricFunctionPlot(feature,varargin)
-% feature = 'approachavoid';
+% feature = 'stoppingpts_per_unittravel_method6';
 close all; clc;
 
 % connect to database
@@ -21,7 +21,7 @@ incubationId = sprintf('%d,', incubationId); % convert array to string
 incubationId = incubationId(1:end-1); % remove last comma
 
 % Do you want to plot for Oxy or Incubation?
-healthType = input('Which data do you want to analyze? Print "Oxycodon" or "Incubation"\n','s');
+healthType = input('Which data do you want to analyze? Print "Oxycodon" or "Incubation": ','s');
 if strcmpi(healthType,'Oxycodon')
     ids = oxyId;
 else
@@ -32,13 +32,13 @@ end
 approachTrials = input('Do you want to analyze only approach trials? (y/n) ', 's');
 
 if strcmpi(approachTrials,'y')
-    oxyLiveTableQuery = sprintf("SELECT id, genotype, tasktypedone, subjectid, health, referencetime, " + ...
+    liveTableQuery = sprintf("SELECT id, genotype, tasktypedone, subjectid, health, referencetime, " + ...
         "gender, feeder FROM live_table WHERE id IN (%s) AND approachavoid = '1.000000' ORDER BY id;",ids);
 else
-    oxyLiveTableQuery = sprintf("SELECT id, genotype, tasktypedone, subjectid, health, referencetime, " + ...
+    liveTableQuery = sprintf("SELECT id, genotype, tasktypedone, subjectid, health, referencetime, " + ...
         "gender, feeder FROM live_table WHERE id IN (%s) ORDER BY id;",ids);
 end
-liveTableData = fetch(conn,oxyLiveTableQuery);
+liveTableData = fetch(conn,liveTableQuery);
 
 featuretableQuery = sprintf("SELECT id, %s FROM featuretable2 WHERE id IN (%s) ORDER BY id;", ...
     feature,ids);
@@ -91,7 +91,7 @@ else
     else
         [featureForEachSubjectId,avFeature,stdError] ...
             = psychometricFunPlotValues({dataForHealthType},logicalFeature,feature);
-        label = {'Oxycodon'};
+        label = {sprintf('%s',healthType)};
     end
 end
 
