@@ -2,9 +2,10 @@
 % Date: 08/08/2023
 
 % This function overlays line plots
+close all;
 
-f1 = 'BLRejectTrialsPassing.fig';
-f2 = 'FDRejectTrialsPassing.fig';
+f1 = 'BLstop.fig';
+f2 = 'inc_stop.fig';
 
 % Load the first figure and get the handles of the axes and children
 fig1 = openfig(f1);
