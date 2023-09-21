@@ -12,13 +12,12 @@
 % boostMales = {'carl','jr','kobe','mike','sully'};
 
 
-function fractionOfSigmoid = sessionPlot(feature,whichAnimal)
+function [fractionOfSigmoid, allGoodness] = sessionPlot(feature,whichAnimal)
 
-% feature = 'approachavoid'; whichAnimal = 'juana';
+% feature = 'approachavoid'; whichAnimal = 'pepper';
 
 % loadFile = load(sprintf('%sData.mat',whichAnimal));
 % subjectData = loadFile.dataForHealthType;
-
 % connect to database
 datasource = 'live_database';
 conn = database(datasource,'postgres','1234');
