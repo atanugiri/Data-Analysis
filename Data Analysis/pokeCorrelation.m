@@ -1,55 +1,87 @@
 % Author: Atanu Giri
-% Date: 04/08/2023
-% This function looks for correlation of number of pokes provided by Travis
-% with normal sigmoid function.
+% Date: 09/11/2023
+% This script calculates the correlation between amount of Oxy and fraction
+% of sigmoid for each animal
 
-close all; clc;
-animal = {'Pepper','Captain','Buzz','Woody','Rex','Barbie','Slinky', ...
-    'Ken','Wanda','Vision'};
-females = {'Pepper','Barbie','Wanda','Vision'};
-males = {'Captain','Buzz','Woody','Rex','Slinky','Ken'};
+file = 'oxy self admin.xlsx';
+dataTable = readtable(file);
+dataTable = dataTable(5:12, :);
+pokeData = dataTable{:, 2:15};
 
-day1poke = [47,15,18,10,13,57,2,14,39,16];
-day30poke = [25,27,96,37,32,70,20,24,50,72];
-averagePoke = (day1poke + day30poke)/2;
-
-femaleday1poke = [47, 57, 39, 16];
-femaleday30poke = [25, 70, 50, 72];
-femaleaveragePoke = (femaleday1poke + femaleday30poke)/2;
-
-maleday1poke = [15,18,10,13,2,14];
-maleday30poke = [27,96,37,32,20,24];
-maleaveragePoke = (maleday1poke + maleday30poke)/2;
-
-% P1L1 and P2L1L2 together
-sigmoidNo = [4/5, 1/6, 3/11, 7/10, 6/11, 3/8, 5/7, 6/8, 1/4, 4/7]; % with R^2 >= 0.4
-femalesigmoidNo = [4/5, 3/8, 1/4, 4/7];
-malesigmoidNo = [1/6, 3/11, 7/10, 6/11, 5/7, 6/8];
-
-% Plot
-subplot(1,3,1);
-% plot(day1poke(3:10)',sigmoidNo(3:10)','ko');
-% plot(femaleday1poke',femalesigmoidNo','ko');
-plot(maleday1poke',malesigmoidNo','ko');
-title('Day1 Poke','Interpreter','latex','FontSize',15);
-ylim([0 1]);
-hold on;
-subplot(1,3,2);
-% plot(day30poke(3:10)',sigmoidNo(3:10)','ko');
-% plot(femaleday30poke',femalesigmoidNo','ko');
-plot(maleday30poke',malesigmoidNo','ko');
-title('Day30 Poke','Interpreter','latex','FontSize',15);
-subplot(1,3,3);
-% plot(averagePoke(3:10)',sigmoidNo(3:10)','ko');
-% plot(femaleaveragePoke',femalesigmoidNo','ko');
-plot(maleaveragePoke',malesigmoidNo','ko');
-title('Average Poke','Interpreter','latex','FontSize',15);
-
-for i = 1:3
-    subplot(1,3,i);
-    xlim([0,100]);
-    ylim([0,1]);
-    xlabel('Poke','Interpreter','latex','FontSize',15);
-    ylabel('Sigmoid Value','Interpreter','latex','FontSize',15);
+for col = 1:size(pokeData, 2)
+    if col <= 7
+        pokeData(:,col) = 0.1*pokeData(:,col);
+    else
+        pokeData(:,col) = 0.05*pokeData(:,col);
+    end
 end
-print(gcf,'poke correlation','-dpng','-r400');
+
+pokeData(:,size(pokeData, 2)+1) = mean(pokeData, 2);
+
+
+%% Poke correlation
+oxyFemales = {'Pepper','Barbie','Wanda','Vision','Bopeep','Trixie'};
+oxyMales = {'Captain','Buzz','Woody','Rex','Slinky','Ken'};
+
+femaleOxySigFrac = [nan, 0.25, 0.1667, 0.50, 0.50, 0.3750];
+maleOxySigFrac = [nan, 0.5, 0.5, 0.5, 0.3333, 0.1429];
+
+animalNames = {'Barbie','Buzz','Captain','Pepper','Rex','Slinky', ...
+    'Vision','Wanda'};
+
+% Initialize a cell array to store the data
+sigmoidData = zeros(1, numel(animalNames));
+
+% Loop through the animal names and fetch the data
+for i = 1:numel(animalNames)
+    animal = animalNames{i};
+
+    % Check if the animal is in the oxyFemales array
+    if ismember(animal, oxyFemales)
+        sigmoidData(i) = femaleOxySigFrac(strcmp(animal, oxyFemales));
+    end
+
+    % Check if the animal is in the oxyMales array
+    if ismember(animal, oxyMales)
+        sigmoidData(i) = maleOxySigFrac(strcmp(animal, oxyMales));
+    end
+end
+
+subplot_count = 0;
+figure('Position', [100, 100, 1200, 800]);
+
+% Placeholder for R and P
+Rarray = zeros(1, size(pokeData, 2));
+Parray = zeros(1, size(pokeData, 2));
+
+for i = 1:size(pokeData, 2)
+    try
+        subplot_count = subplot_count+1;
+        subplot(3, 5, subplot_count);
+        plot(sigmoidData, pokeData(:,i), '.', 'MarkerSize', 20);
+        xlabel("Fraction of sigmoid","Interpreter","latex");
+        ylabel("Number of pokes","Interpreter","latex");
+        title(sprintf("Day %d poke data", i));
+        hold on;
+
+        % Statistics
+        filter = isfinite(sigmoidData);
+        x = sigmoidData(filter);
+        thisCol = pokeData(:,i)';
+        y = thisCol(filter);
+        [R, P] = corrcoef(x, y);
+        Rarray(i) = R(1,2);
+        Parray(i) = P(1,2);
+
+         % Plot the correlation line
+        coefficients = polyfit(x, y, 1); % Fit a linear regression line
+        x_fit = min(x):0.01:max(x);
+        y_fit = polyval(coefficients, x_fit);
+        plot(x_fit, y_fit, 'r', 'LineWidth', 2);
+        text(mean(x), max(y), sprintf("R = %.2f",R(1,2)));
+
+    catch
+        error("Data not found.");
+    end
+    
+end
