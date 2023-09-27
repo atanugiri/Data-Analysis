@@ -105,4 +105,4 @@ else
 end
 
 % Perform post hoc analysis (e.g., Tukey's HSD)
-[c,~,~,gnames] = multcompare(stats);
+[c,~,~,gnames] = multcompare(stats, 'Display','off');
