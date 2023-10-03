@@ -29,8 +29,7 @@ for i = 1:numPerLine:numValues
     fprintf('\n');
 end
 
-healthType = input(['Which health types do you want to analyze?\n' ...
-    '(enter multiple values separated by comma and a space or type ''all'' for all types): '],'s');
+healthType = input('Which health types do you want to analyze? ' ,'s');
 
 % Select animal name
 animalQuery = "SELECT DISTINCT subjectid FROM live_table;";
