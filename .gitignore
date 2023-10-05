@@ -1,2 +1,6 @@
 *.pptx
 *.DS_Store
+*.fig
+*.asv
+postAlcoholPsychometricFunctionPlot.m
+"alcohol animal data/"
