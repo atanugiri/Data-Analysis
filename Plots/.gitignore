@@ -1,1 +1,5 @@
 *.fig
+foodDeprivationDataForTaskType.m
+preFeedingDataForTaskType.m
+psychometicalFunctionPlot.m
+salineGhrelinDataForTaskType.m
