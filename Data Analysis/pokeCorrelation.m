@@ -5,7 +5,7 @@
 
 file = 'oxy self admin.xlsx';
 dataTable = readtable(file);
-dataTable = dataTable(5:12, :);
+dataTable = dataTable(5:15, :);
 pokeData = dataTable{:, 2:15};
 
 for col = 1:size(pokeData, 2)
@@ -23,11 +23,11 @@ pokeData(:,size(pokeData, 2)+1) = mean(pokeData, 2);
 oxyFemales = {'Pepper','Barbie','Wanda','Vision','Bopeep','Trixie'};
 oxyMales = {'Captain','Buzz','Woody','Rex','Slinky','Ken'};
 
-femaleOxySigFrac = [nan, 0.25, 0.1667, 0.50, 0.50, 0.3750];
-maleOxySigFrac = [nan, 0.5, 0.5, 0.5, 0.3333, 0.1429];
+femaleOxySigFrac = [0, 0.25, 0.1667, 0.50, 0.50, 0.3750];
+maleOxySigFrac = [0.25, 0.5, 0.5, 0.5, 0.3333, 0.1429];
 
 animalNames = {'Barbie','Buzz','Captain','Pepper','Rex','Slinky', ...
-    'Vision','Wanda'};
+    'Vision','Wanda','Ken','Woody','Trixie'};
 
 % Initialize a cell array to store the data
 sigmoidData = zeros(1, numel(animalNames));
@@ -65,9 +65,9 @@ for i = 1:size(pokeData, 2)
         hold on;
 
         % Statistics
-        filter = isfinite(sigmoidData);
-        x = sigmoidData(filter);
         thisCol = pokeData(:,i)';
+        filter = isfinite(sigmoidData) & isfinite(thisCol);
+        x = sigmoidData(filter);
         y = thisCol(filter);
         [R, P] = corrcoef(x, y);
         Rarray(i) = R(1,2);
