@@ -4,8 +4,8 @@
 % This function overlays line plots
 close all;
 
-f1 = 'BLstop.fig';
-f2 = 'inc_stop.fig';
+f1 = 'salApproachrate.fig';
+f2 = 'ghrApproachrate.fig';
 
 % Load the first figure and get the handles of the axes and children
 fig1 = openfig(f1);
