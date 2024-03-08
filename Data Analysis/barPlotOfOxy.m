@@ -14,15 +14,6 @@ femaleBLSigFrac = [0.75, 1, 1, 0.75, 1, 1, 1, 1, 0.75, 1]; % BL = Baseline
 maleBLSigFrac = [1, 1, 1, 1, 1, 1, 1, 0.75, 1, 1];
 
 %% Oxy and Incubation
-% oxyAnimal = {'Pepper','Captain','Buzz','Woody','Rex','Barbie', ...
-%     'Slinky','Ken','Wanda','Vision','Bopeep','Trixie'};
-% % Fraction of Sigmoid
-% oxySigFrac = [nan, nan, 0.5, 0.5, 0.5, 0.25, ...
-%     0.3333, 0.1429, 0.1667, 0.50, 0.50, 0.3750];
-% incubSigFrac = [0.5, 0.25, 0.25, 0.7, 0.5833, 0.3750, ...
-%     0.7143, 0.75, 0.25, 0.5714, 1.00, 0.8750];
-
-% separate male and female into array
 oxyFemales = {'Pepper','Barbie','Wanda','Vision','Bopeep','Trixie'};
 oxyMales = {'Captain','Buzz','Woody','Rex','Slinky','Ken'};
 
@@ -73,18 +64,26 @@ stderrs = std(SigFracGrouped, 0, 2, 'omitnan') ./ sqrt(n);
 groupLabels = {'Female BL', 'Male BL', 'Female Oxy', 'Male Oxy', ...
     'Female Incub', 'Male Incub', 'Female PA', 'Male PA'};
 
-% Define the bar heights and errors for each group
-barHeights = means';
-barErrors = stderrs';
+%% Plotting
+Colors = parula(size(SigFracGrouped, 1));
 
-% Plot the bar graph with grouped bars
-bar(1:length(barHeights), barHeights, 'grouped');
-hold on;
-errorbar(1:length(barHeights), barHeights, barErrors, 'k.', 'LineWidth', 1);
+for i = 1:size(SigFracGrouped, 1)
+    bar(i, means(i), 'DisplayName', groupLabels{i}, 'FaceColor', Colors(i,:));
+    hold on;
+    errorbar(i, means(i), stderrs(i), 'Color', 'k', 'DisplayName', 'none');
 
-% Set the x-axis labels and plot title
-set(gca, 'XTick', 1:length(barHeights), 'XTickLabel', groupLabels, ...
-    'TickLabelInterpreter','latex');
+    % Plot individual data points
+    dataPoints = SigFracGrouped(i,:);
+    dataPoints = dataPoints(isfinite(dataPoints));
+    jitter = randn(1, length(dataPoints)) * 0.1;
+    x_values = i + jitter;
+
+    scatter(x_values, dataPoints, 'filled', ...
+        'MarkerFaceColor', 'none', 'MarkerEdgeColor', 'k');
+    ylim([0, 1]);
+end
+legend('show');
+
 xlabel('Group','Interpreter','latex','FontSize',15);
 ylabel('Fraction of Sigmoid','Interpreter','latex','FontSize',15);
 title('Fraction of Sigmoid by Group','Interpreter','latex','FontSize',20);
