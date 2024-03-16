@@ -22,21 +22,11 @@ paddedDataLC = paddedDataFun(allDataLC);
 % Create a grouping variable indicating the groups
 groupsLC = {'fLCbl', 'mLCbl', 'fLCfd', 'mLCfd'};
 
-% Perform one-way ANOVA LC
-% [p_lc, tbl_lc, stats_lc] = anova1(paddedDataLC, groupsLC, "off");
-
 % Perform one-way ANOVA between female LC
 [p_flc, tbl_flc, stats_flc] = anova1(paddedDataLC(:,[1,3]), groupsLC([1,3]), 'off');
 
 % Perform one-way ANOVA between male LC
 [p_mlc, tbl_mlc, stats_mlc] = anova1(paddedDataLC(:,[2,4]), groupsLC([2,4]), 'off');
-
-% ANOVA group difference
-LCbl = [fLCbl; mLCbl];
-LCfd = [fLCfd; mLCfd];
-[p_lc, tbl_lc, stats_lc] = anova1([LCbl, LCfd], groupsLC([2,4]), 'off');
-
-
 
 %% High-cost benefit
 fHCbl = dataTable(23:33,3);
@@ -50,14 +40,8 @@ paddedDataHC = paddedDataFun(allDataHC);
 
 groupsHC = {'fHCbl', 'mHCbl', 'fHCfd', 'mHCfd'};
 
-% [p_hc, tbl_hc, stats_hc] = anova1(paddedDataHC, groupsHC, "off");
 [p_fhc, tbl_fhc, stats_fhc] = anova1(paddedDataHC(:,[1,3]), groupsHC([1,3]),"off");
 [p_mhc, tbl_mhc, stats_mhc] = anova1(paddedDataHC(:,[2,4]), groupsHC([2,4]),"off");
-
-% ANOVA group difference
-HCbl = [fHCbl; mHCbl];
-HCfd = [fHCfd; mHCfd; nan];
-[p_hc, tbl_hc, stats_hc] = anova1([HCbl, HCfd], groupsLC([2,4]), 'off');
 
 %% Data analysis
 meanLC = zeros(1, length(groupsLC));
